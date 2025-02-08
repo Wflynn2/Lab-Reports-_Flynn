@@ -56,18 +56,41 @@
 	<!-- -------------------------------------------------------------------------------------------- -->
 	<section id="code">
 	<pre><code class="language-python">
-	# This is just a sample Python code block
-	# demonstrating how code might be displayed.
+	# This is an extension of the code - order 4
+	 initializeTurtle()
+showturtle()
 
-	import numpy as np
-	import matplotlib.pyplot as plt
+# Define the blip_line function (Koch curve)
+def blip_line(length, order):
+    if order == 0:
+        forward(length)
+    else:
+        blip_line(length / 3, order - 1)
+        left(60)
+        blip_line(length / 3, order - 1)
+        right(120)
+        blip_line(length / 3, order - 1)
+        left(60)
+        blip_line(length / 3, order - 1)
 
-	x = np.linspace(-10, 10, 100)
-	y = 2*x + 5
+# Draw the Koch snowflake
+def koch_snowflake(length, order):
+    for _ in range(3):
+        blip_line(length, order)
+        right(120)
 
-	plt.plot(x, y)
-	plt.title("Sample Plot")
-plt.show()
+# Set up the turtle
+jump(250, 500)
+face(0)
+color('blue')
+
+# Draw the snowflake
+length = 400
+order = 4
+koch_snowflake(length, order)
+
+show()
+
 	</code></pre>
 
 
