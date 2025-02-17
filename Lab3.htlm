@@ -6,7 +6,7 @@
 <html>
 <head> <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="stylesheet" href="https://latex.vercel.app/style.css" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"/><script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]}};</script>
 
-<title>Fractal Geometry Lab Report</title>
+<title>Fractal Geometry Lab Report - Module 3</title>
 
 </head>
 	
@@ -18,8 +18,8 @@
   <header>
     <h1>Fractal Geometry Lab Report</h1>
     <p class="author">
-      [Your Name] <br />
-      [Date]
+      [Winsome Flynn] <br />
+      [February 16, 2025]
     </p>
   </header>
   
@@ -36,10 +36,9 @@
       <section id="introduction">
         <h2>Introduction</h2>
         <p>
-          This is a sample introduction showcasing how you might structure 
-          your opening section. Replace this paragraph with a concise 
-          overview of the topic or project you are addressing. You can then 
-          expand the explanation as needed.
+         This assignment is to document how to create an equilateral triangle and 
+          Sierpinski triangle.  These are used to create fractals. The report will
+          document all the elements of the code and then extend the code.
         </p>
       </section>
 
@@ -82,10 +81,60 @@
       
         <h2>Results &amp; Analysis</h2>
         <p>
-          In this placeholder section, you might describe observations,
-          results, or insights gained from any analysis. You can incorporate 
-          references to equations (e.g., $y = mx + b$) or embed images and 
-          other visual aids to illustrate your points.
+          The Module 3 code starts by drawing an equilateral triangle. 
+         Define the function to draw an equilateral triangle
+def draw_triangle(length):
+    for _ in range(3):
+        forward(length)
+        left(120)
+
+# Set up the turtle
+jump(300, 500)
+face(90)
+color('green')
+length = 400
+draw_triangle(length)
+
+Then another code is set up to use equilateral triangles to create equilateral
+triangles within the existing triangle by creating midpoints and connecting 
+the points with lines.  This fractal creates the Sierpinski Triangle.
+# Define the recursive Sierpinski triangle function
+def sierpinski_triangle(length, order):
+    if order == 0:
+        draw_triangle(length)
+    else:
+        sierpinski_triangle(length / 2, order - 1)
+        forward(length / 2)
+        sierpinski_triangle(length / 2, order - 1)
+        backward(length / 2)
+        left(60)
+        forward(length / 2)
+        right(60)
+        sierpinski_triangle(length / 2, order - 1)
+        left(60)
+        backward(length / 2)
+        right(60)
+
+Another view is seen using another code called Cellular Automata.  This code
+looks at the Sierpinski triangle at a closer, magnified appearance.
+
+Changing the order increases the amount of triangles in the Sierpinski Triangle.
+initializeTurtle()
+showturtle()
+
+# Set up the turtle
+jump(300, 500)
+face(90)
+color('green')
+
+# Draw the Sierpinski triangle
+length = 400
+order = 5
+sierpinski_triangle(length, order)
+
+show()
+
+
         </p>
 
 
