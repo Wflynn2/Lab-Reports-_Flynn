@@ -125,7 +125,7 @@ showturtle()
 # Set up the turtle
 jump(300, 500)
 face(90)
-color('green')
+color('blue')
 
 # Draw the Sierpinski triangle
 length = 400
