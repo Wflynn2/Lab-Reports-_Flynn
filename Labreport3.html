@@ -125,25 +125,14 @@ plt.show()
         <p>
           <The Module 3 code starts by drawing an equilateral triangle. 
          
-          <p>Then another code is set up to use equilateral triangles to create equilateral
+<p> 
+Then another code is set up to use equilateral triangles to create equilateral
 triangles within the existing triangle by creating midpoints and connecting 
-the points with lines.  This fractal creates the Sierpinski Triangle.
-# Define the recursive Sierpinski triangle function
-def sierpinski_triangle(length, order):
-    if order == 0:
-        draw_triangle(length)
-    else:
-        sierpinski_triangle(length / 2, order - 1)
-        forward(length / 2)
-        sierpinski_triangle(length / 2, order - 1)
-        backward(length / 2)
-        left(60)
-        forward(length / 2)
-        right(60)
-        sierpinski_triangle(length / 2, order - 1)
-        left(60)
-        backward(length / 2)
-        right(60)
+the points with lines.  
+
+<p>
+This fractal creates the Sierpinski Triangle.
+
 
 Another view is seen using another code called Cellular Automata.  This code
 looks at the Sierpinski triangle at a closer, magnified appearance.
