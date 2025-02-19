@@ -50,17 +50,61 @@
 	<section id="code">
 	<pre><code class="language-python">
 	# This is just a sample Python code block
-	# demonstrating how code might be displayed.
+	Extension of Code:
 
-	import numpy as np
-	import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+import numpy as np
 
-	x = np.linspace(-10, 10, 100)
-	y = 2*x + 5
+# Function to calculate the midpoints of a triangle
+def midpoint(p1, p2, p3):
+    return (p1 + p2 + p3) / 3
 
-	plt.plot(x, y)
-	plt.title("Sample Plot")
-	plt.show()
+# Recursive function to generate the Sierpinski triangle in 3D
+def sierpinski_3d(vertices, depth):
+    if depth == 0:
+        # Create a single triangle at depth 0
+        triangles = [vertices]
+        return triangles
+    else:
+        # Calculate midpoints of the current triangle
+        p1, p2, p3 = vertices
+        m1 = midpoint(p1, p2, p3)
+        m2 = midpoint(p1, p2, p3)
+        m3 = midpoint(p1, p2, p3)
+        
+        # Generate smaller triangles at the next depth level
+        smaller_triangles = []
+        smaller_triangles += sierpinski_3d([p1, m1, m2], depth - 1)
+        smaller_triangles += sierpinski_3d([p2, m2, m3], depth - 1)
+        smaller_triangles += sierpinski_3d([p3, m3, m1], depth - 1)
+        
+        return smaller_triangles
+
+# Initial triangle vertices in 3D
+p1 = np.array([1, 0, 0])
+p2 = np.array([-1, 0, 0])
+p3 = np.array([0, 1, 0])
+depth = 3
+
+# Create the Sierpinski triangle fractal
+triangles = sierpinski_3d([p1, p2, p3], depth)
+
+# Plotting the result
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot each triangle
+for tri in triangles:
+    ax.add_collection3d(Poly3DCollection([tri], color='cyan', linewidths=1, edgecolors='r', alpha=0.3))
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+
+plt.show()
+
+
 	</code></pre>
 
 
