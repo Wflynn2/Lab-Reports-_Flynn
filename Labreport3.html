@@ -181,12 +181,14 @@ initializeTurtle()
       <section id="conclusion">
         <h2>Conclusion</h2>
         <p>
-          Explanation of the code:
-# midpoint(): This function calculates the midpoint of a triangle.
-# sierpinski_3d(): This recursive function creates the 3D Sierpinski triangle. At each recursive depth, it subdivides the triangles into smaller ones.
-p1, p2, p3: These are the coordinates of the three corners of the initial triangle.
-depth: This parameter defines how many iterations deep the recursion will go. Increasing this value generates more fractals.
-Poly3DCollection: This is used to visualize the 3D triangles. 
+          <strong>Explanation of the code:</strong>
+<ul>
+  <li><strong>midpoint():</strong> This function calculates the midpoint of a triangle by averaging the coordinates of its three vertices.</li>
+  <li><strong>sierpinski_3d():</strong> This recursive function generates the 3D Sierpiński triangle. At each recursion depth, it subdivides the triangle into smaller triangles, removing the central portion to create the fractal structure.</li>
+  <li><strong>p1, p2, p3:</strong> These represent the coordinates of the three corners of the initial equilateral triangle from which the fractal starts.</li>
+  <li><strong>depth:</strong> This parameter controls the recursion depth, determining how many iterations of subdivision will occur. A higher depth results in a more detailed fractal structure.</li>
+  <li><strong>Poly3DCollection:</strong> This is a feature from the Matplotlib library used to visualize the 3D Sierpiński triangles by rendering the smaller triangles as 3D polygons.</li>
+</ul>
         </p>
       </section>
 
