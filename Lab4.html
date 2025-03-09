@@ -1,1 +1,206 @@
+<!-- INTRODUCTION SECTION -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<html>
+<head> <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="stylesheet" href="https://latex.vercel.app/style.css" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"/><script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]}};</script>
 
+<title>Fractal Geometry Lab Report - Module 4</title>
+
+</head>
+	
+<body id="top">
+
+
+
+  <header>
+    <h1>Fractal Geometry Lab Report</h1>
+    <p class="author">
+      [Winsome Flynn] <br />
+      [March 9, 2025]
+    </p>
+  </header>
+  
+
+
+  <main>
+    <article class="indent-pars">
+      
+      <!-- INTRODUCTION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+         This assignment is to document how to create an equilateral triangle and 
+          Sierpinski triangle.  These are used to create fractals. The report will
+          document all the elements of the code and then extend the code.
+        </p>
+      </section>
+
+
+     
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<section id="code">
+	<pre><code class="language-python">
+	# This is an Extension of the Code;
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+import numpy as np
+
+# Function to calculate the midpoints of a triangle
+def midpoint(p1, p2, p3):
+    return (p1 + p2 + p3) / 3
+
+# Recursive function to generate the Sierpinski triangle in 3D
+def sierpinski_3d(vertices, depth):
+    if depth == 0:
+        # Create a single triangle at depth 0
+        triangles = [vertices]
+        return triangles
+    else:
+        # Calculate midpoints of the current triangle
+        p1, p2, p3 = vertices
+        m1 = midpoint(p1, p2, p3)
+        m2 = midpoint(p1, p2, p3)
+        m3 = midpoint(p1, p2, p3)
+        
+        # Generate smaller triangles at the next depth level
+        smaller_triangles = []
+        smaller_triangles += sierpinski_3d([p1, m1, m2], depth - 1)
+        smaller_triangles += sierpinski_3d([p2, m2, m3], depth - 1)
+        smaller_triangles += sierpinski_3d([p3, m3, m1], depth - 1)
+        
+        return smaller_triangles
+
+# Initial triangle vertices in 3D
+p1 = np.array([1, 0, 0])
+p2 = np.array([-1, 0, 0])
+p3 = np.array([0, 1, 0])
+depth = 3
+
+# Create the Sierpinski triangle fractal
+triangles = sierpinski_3d([p1, p2, p3], depth)
+
+# Plotting the result
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot each triangle
+for tri in triangles:
+    ax.add_collection3d(Poly3DCollection([tri], color='cyan', linewidths=1, edgecolors='r', alpha=0.3))
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+
+plt.show()
+
+
+	</code></pre>
+
+
+
+
+
+
+      </section>
+
+      <!-- RESULTS & ANALYSIS SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="results">
+      
+      
+        <h2>Results &amp; Analysis</h2>
+        <p>
+The Module 3 code starts by drawing an equilateral triangle. 
+         
+<p> 
+Then another code is set up to use equilateral triangles to create equilateral
+triangles within the existing triangle by creating midpoints and connecting 
+the points with lines.  
+
+<p>
+This fractal creates the Sierpinski Triangle.
+
+<p>
+Another view is seen using another code called Cellular Automata.  This code
+looks at the Sierpinski triangle at a closer, magnified appearance.
+
+<p>
+
+Changing the order increases the amount of triangles in the Sierpinski Triangle.
+initializeTurtle()
+
+
+
+        </p>
+
+
+
+
+        <figure>
+  <img
+    src="https://raw.githubusercontent.com/Wflynn2/Lab-Reports-_Flynn/main/Sierpenski%20triangle.jpeg"
+    alt="Sierpenski triangle"
+    width="600"
+    height="400"
+    loading="lazy"
+  />
+</figure>
+          />
+          <figcaption>
+          <strong>Figure 1:</strong> 
+		A representation of the Sierpiński triangle, a fractal and self-replicating pattern. T
+		  his triangular structure is formed by recursively subdividing an equilateral triangle into smaller triangles, 
+		  removing the central triangle at each step. The result is a visually complex, infinitely detailed pattern.
+
+
+
+
+
+      </section>
+
+
+
+      <!-- CONCLUSION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>
+          <strong>Explanation of the code:</strong>
+<ul>
+  <li><strong>midpoint():</strong> This function calculates the midpoint of a triangle by averaging the coordinates of its three vertices.</li>
+  <li><strong>sierpinski_3d():</strong> This recursive function generates the 3D Sierpiński triangle. At each recursion depth, it subdivides the triangle into smaller triangles, removing the central portion to create the fractal structure.</li>
+  <li><strong>p1, p2, p3:</strong> These represent the coordinates of the three corners of the initial equilateral triangle from which the fractal starts.</li>
+  <li><strong>depth:</strong> This parameter controls the recursion depth, determining how many iterations of subdivision will occur. A higher depth results in a more detailed fractal structure.</li>
+  <li><strong>Poly3DCollection:</strong> This is a feature from the Matplotlib library used to visualize the 3D Sierpiński triangles by rendering the smaller triangles as 3D polygons.</li>
+</ul>
+        </p>
+      </section>
+
+     
+     
+     
+   
+     
+     
+     
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>
