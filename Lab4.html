@@ -54,58 +54,58 @@
 	<pre><code class="language-python">
 	# This is an Extension of the Code;
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-import numpy as np
+# prompt: expand using 3D
 
-# Function to calculate the midpoints of a triangle
-def midpoint(p1, p2, p3):
-    return (p1 + p2 + p3) / 3
+from turtle_setup import *
+!wget -O turtle_setup.py 'https://raw.githubusercontent.com/williamedwardhahn/fractal25/refs/heads/main/turtle_setup.py'
 
-# Recursive function to generate the Sierpinski triangle in 3D
-def sierpinski_3d(vertices, depth):
+# Function to draw a 3D-like fractal tree using recursion
+def fractal_tree_3d(length, depth, angle):
     if depth == 0:
-        # Create a single triangle at depth 0
-        triangles = [vertices]
-        return triangles
+        return
     else:
-        # Calculate midpoints of the current triangle
-        p1, p2, p3 = vertices
-        m1 = midpoint(p1, p2, p3)
-        m2 = midpoint(p1, p2, p3)
-        m3 = midpoint(p1, p2, p3)
-        
-        # Generate smaller triangles at the next depth level
-        smaller_triangles = []
-        smaller_triangles += sierpinski_3d([p1, m1, m2], depth - 1)
-        smaller_triangles += sierpinski_3d([p2, m2, m3], depth - 1)
-        smaller_triangles += sierpinski_3d([p3, m3, m1], depth - 1)
-        
-        return smaller_triangles
+        forward(length)
+        left(angle)
+        fractal_tree_3d(length * 0.7, depth - 1, angle)  # Left branch
+        right(2 * angle)
+        fractal_tree_3d(length * 0.7, depth - 1, angle) # Right branch
 
-# Initial triangle vertices in 3D
-p1 = np.array([1, 0, 0])
-p2 = np.array([-1, 0, 0])
-p3 = np.array([0, 1, 0])
-depth = 3
+        left(angle)
+        backward(length)
 
-# Create the Sierpinski triangle fractal
-triangles = sierpinski_3d([p1, p2, p3], depth)
+        # Simulate depth by slightly shifting the branches
+        if depth > 2: # Avoid shifting too early
+          penup()
+          right(angle/2)
+          forward(depth * 2)
+          pendown()
+          left(angle/2)
+          fractal_tree_3d(length * 0.5, depth - 2, angle) # depth branch
+          penup()
+          backward(depth * 2)
+          left(angle/2)
+          pendown()
+          right(angle/2)
 
-# Plotting the result
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
 
-# Plot each triangle
-for tri in triangles:
-    ax.add_collection3d(Poly3DCollection([tri], color='cyan', linewidths=1, edgecolors='r', alpha=0.3))
+# Initialize the turtle
+initializeTurtle(initial_window_size=(800, 800))
 
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
+# Set up the turtle's starting position and orientation
+jump(400, 600)  # Starting position at the bottom center of the canvas
+face(0)
+color('green')  # Set the pen color
+speed(0) # Set speed to fastest
 
-plt.show()
+# Set the length and depth for the fractal tree
+length = 80  # Initial length of the main trunk
+depth = 7     # Recursion depth (number of branching levels)
+angle = 25 # branching angle
+# Draw the 3D-like fractal tree
+fractal_tree_3d(length, depth, angle)
 
+# Display the drawing
+show()
 
 	</code></pre>
 
