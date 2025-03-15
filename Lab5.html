@@ -61,58 +61,88 @@
 	<pre><code class="language-python">
 	# This is an Extension of the Code;
 
-# prompt: expand using 3D
+# prompt: cantor cubes
 
-from turtle_setup import *
-!wget -O turtle_setup.py 'https://raw.githubusercontent.com/williamedwardhahn/fractal25/refs/heads/main/turtle_setup.py'
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
-# Function to draw a 3D-like fractal tree using recursion
-def fractal_tree_3d(length, depth, angle):
+# Set initial parameters
+x_start = 0
+x_end = 3
+y_start = 0
+y_end = 3
+z_position = 0
+bar_height = 5
+spacing = 10
+depth = 4
+
+
+def cantor_cube(x_start, x_end, y_start, y_end, z_position, depth):
     if depth == 0:
-        return
-    else:
-        forward(length)
-        left(angle)
-        fractal_tree_3d(length * 0.7, depth - 1, angle)  # Left branch
-        right(2 * angle)
-        fractal_tree_3d(length * 0.7, depth - 1, angle) # Right branch
+        return []
 
-        left(angle)
-        backward(length)
+    # Calculate the size of the segments
+    x_mid = (x_start + x_end) / 2
+    y_mid = (y_start + y_end) / 2
 
-        # Simulate depth by slightly shifting the branches
-        if depth > 2: # Avoid shifting too early
-          penup()
-          right(angle/2)
-          forward(depth * 2)
-          pendown()
-          left(angle/2)
-          fractal_tree_3d(length * 0.5, depth - 2, angle) # depth branch
-          penup()
-          backward(depth * 2)
-          left(angle/2)
-          pendown()
-          right(angle/2)
+    # Define the segments
+    segments = []
+
+    # Define the 8 segments for each cube iteration
+    points = [
+        (x_start, y_start, z_position),
+        (x_mid, y_start, z_position),
+        (x_start, y_mid, z_position),
+        (x_mid, y_mid, z_position),
+        (x_start, y_start, z_position - bar_height),
+        (x_mid, y_start, z_position - bar_height),
+        (x_start, y_mid, z_position - bar_height),
+        (x_mid, y_mid, z_position - bar_height),
+
+        (x_mid, y_mid, z_position),
+        (x_end, y_mid, z_position),
+        (x_mid, y_end, z_position),
+        (x_end, y_end, z_position),
+        (x_mid, y_mid, z_position - bar_height),
+        (x_end, y_mid, z_position - bar_height),
+        (x_mid, y_end, z_position - bar_height),
+        (x_end, y_end, z_position - bar_height),
+
+    ]
+
+    for i in range(0, 16, 2):
+        segments.append((points[i], points[i+1]))
 
 
-# Initialize the turtle
-initializeTurtle(initial_window_size=(800, 800))
+    # Recursively call Cantor Cube
+    segments += cantor_cube(x_start, x_mid, y_start, y_mid, z_position - spacing, depth - 1)
+    segments += cantor_cube(x_mid, x_end, y_start, y_mid, z_position - spacing, depth - 1)
+    segments += cantor_cube(x_start, x_mid, y_mid, y_end, z_position - spacing, depth - 1)
+    segments += cantor_cube(x_mid, x_end, y_mid, y_end, z_position - spacing, depth - 1)
 
-# Set up the turtle's starting position and orientation
-jump(400, 600)  # Starting position at the bottom center of the canvas
-face(0)
-color('green')  # Set the pen color
-speed(0) # Set speed to fastest
+    return segments
 
-# Set the length and depth for the fractal tree
-length = 80  # Initial length of the main trunk
-depth = 7     # Recursion depth (number of branching levels)
-angle = 25 # branching angle
-# Draw the 3D-like fractal tree
-fractal_tree_3d(length, depth, angle)
+# Create segments
+segments = cantor_cube(x_start, x_end, y_start, y_end, z_position, depth)
 
-# Display the drawing
-show()
+
+#Plot
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111, projection='3d')
+
+for segment in segments:
+    x = [segment[0][0], segment[1][0]]
+    y = [segment[0][1], segment[1][1]]
+    z = [segment[0][2], segment[1][2]]
+
+    ax.plot(x, y, z, color='black', linewidth=2)
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Cantor Cube')
+plt.show()
 
 	</code></pre>
 
@@ -158,16 +188,11 @@ Mathematical precision is incorporated using L-systems, axial trees, and phyllot
 
 		 <figcaption>
           <strong>Figure 1:</strong> 
-		The image titled "3D Tree Fractal" depicts a tree-like fractal structure generated using code.
-			 The second image title "Phyllotactic Pattern Tree" depicts a tree-like fractal structure
-			 generated using code.
+		The Cantor cube
 
 
 
-<img src="https://raw.githubusercontent.com/Wflynn2/Lab-Reports-_Flynn/main/Pyllotactic%20patterns%20tree.png" 
-     alt="Phyllotactic Patterns Tree" 
-     width="600" 
-     height="400">
+
 
       </section>
 
