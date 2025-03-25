@@ -1,1 +1,275 @@
+<!-- INTRODUCTION SECTION -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<html>
+<head> <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="stylesheet" href="https://latex.vercel.app/style.css" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"/><script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]}};</script>
 
+<title>Fractal Geometry Lab Report - Module 6</title>
+
+</head>
+	
+<body id="top">
+
+
+
+  <header>
+    <h1>Fractal Geometry Lab Report</h1>
+    <p class="author">
+      [Winsome Flynn] <br />
+      [March 25, 2025]
+    </p>
+  </header>
+  
+
+
+  <main>
+    <article class="indent-pars">
+      
+      <!-- INTRODUCTION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+        Modole 6 is about creating 2D dot grids.  The first part of this assignment is to document each function, explain its role in creating and visualizing the patterns.
+        
+
+    Parameters:
+    - size (int): The number of points along each axis, resulting in a size x size grid.
+
+    Returns:
+    - grid (tuple of ndarrays): A tuple containing two 2D arrays (x_grid, y_grid) representing 
+      the coordinates of the grid points.
+    
+    Explanation:
+    - np.linspace(-1, 1, size): Generates 'size' evenly spaced points between -1 and 1 along each axis.
+    - np.meshgrid(x, y): Creates two 2D arrays (x_grid and y_grid), where:
+        - x_grid contains the x-coordinates repeated along the rows.
+        - y_grid contains the y-coordinates repeated along the columns.
+
+		<p></p>
+
+	     
+        </p>
+      </section>
+
+
+     
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<section id="code">
+	<pre><code class="language-python">
+	# This is an Extension of the Code;
+
+# prompt: cantor cubes
+
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Set initial parameters
+x_start = 0
+x_end = 3
+y_start = 0
+y_end = 3
+z_position = 0
+bar_height = 5
+spacing = 10
+depth = 4
+
+
+def cantor_cube(x_start, x_end, y_start, y_end, z_position, depth):
+    if depth == 0:
+        return []
+
+    # Calculate the size of the segments
+    x_mid = (x_start + x_end) / 2
+    y_mid = (y_start + y_end) / 2
+
+    # Define the segments
+    segments = []
+
+    # Define the 8 segments for each cube iteration
+    points = [
+        (x_start, y_start, z_position),
+        (x_mid, y_start, z_position),
+        (x_start, y_mid, z_position),
+        (x_mid, y_mid, z_position),
+        (x_start, y_start, z_position - bar_height),
+        (x_mid, y_start, z_position - bar_height),
+        (x_start, y_mid, z_position - bar_height),
+        (x_mid, y_mid, z_position - bar_height),
+
+        (x_mid, y_mid, z_position),
+        (x_end, y_mid, z_position),
+        (x_mid, y_end, z_position),
+        (x_end, y_end, z_position),
+        (x_mid, y_mid, z_position - bar_height),
+        (x_end, y_mid, z_position - bar_height),
+        (x_mid, y_end, z_position - bar_height),
+        (x_end, y_end, z_position - bar_height),
+
+    ]
+
+    for i in range(0, 16, 2):
+        segments.append((points[i], points[i+1]))
+
+
+    # Recursively call Cantor Cube
+    segments += cantor_cube(x_start, x_mid, y_start, y_mid, z_position - spacing, depth - 1)
+    segments += cantor_cube(x_mid, x_end, y_start, y_mid, z_position - spacing, depth - 1)
+    segments += cantor_cube(x_start, x_mid, y_mid, y_end, z_position - spacing, depth - 1)
+    segments += cantor_cube(x_mid, x_end, y_mid, y_end, z_position - spacing, depth - 1)
+
+    return segments
+
+# Create segments
+segments = cantor_cube(x_start, x_end, y_start, y_end, z_position, depth)
+
+
+#Plot
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111, projection='3d')
+
+for segment in segments:
+    x = [segment[0][0], segment[1][0]]
+    y = [segment[0][1], segment[1][1]]
+    z = [segment[0][2], segment[1][2]]
+
+    ax.plot(x, y, z, color='black', linewidth=2)
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Cantor Cube')
+plt.show()
+
+	</code></pre>
+
+
+
+
+
+
+      </section>
+
+      <!-- RESULTS & ANALYSIS SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="results">
+      
+      
+        <h2>Results &amp; Analysis</h2>
+        <p>
+The Cantor fractal is a self-similar fractal created by repeatedly removing middle sections of a shape while preserving its structure at smaller scales. 
+		Common versions include the Cantor set (1D), Cantor dust (2D), and Cantor cube (3D).  The initial bar spans from x_start to x_end.
+At each recursion level:
+The middle third of each bar is removed.
+The remaining left and right segments are drawn.
+This process repeats for depth levels.
+The result is a fractal where each level reveals smaller black bars with increasing gaps, forming the Cantor set.
+
+		<p></p>
+	      The Code is in different parts as follows:
+	      <p>
+		      numpy is used to store the segments of the Cantor set in a structured format.
+matplotlib.pyplot is used to plot the Cantor set.
+		      <p>
+			      The Cantor set starts with a black bar spanning from x_start to x_end.
+			      <p>
+depth controls how many iterations (levels) the recursion will run.
+				      <p>
+spacing determines the distance between each row of bars.
+					      <p>
+bar_height specifies how thick the bars appear.
+						      <p>
+The Cantor set is constructed by repeatedly removing the middle third of each segment.
+							      <p>
+For the current bar:
+								      <p>
+left_segment: The left third of the current bar.
+									      <p>
+right_segment: The right third of the current bar.
+										      <p>
+The middle third is removed, creating the "gap."
+											      <p>
+The function makes recursive calls:
+												      <p>
+Left side: Calls the function again for the left third of the current segment.
+Right side: Calls the function again for the right third of the current segment.
+													      <p>
+													      
+													      
+Decreases depth by 1 and lowers the y_position by spacing for the next level.
+	      </p>
+         
+
+
+
+
+
+
+
+        </p>
+
+
+
+
+         <figure>
+ <img src="https://raw.githubusercontent.com/Wflynn2/Lab-Reports-_Flynn/main/Cantor%20Cube.png" 
+     alt="Cantor Cube" 
+     width="600" 
+     height="400">
+
+		 <figcaption>
+          <strong>Figure 1:</strong> 
+		The Cantor cube
+
+
+
+
+
+      </section>
+
+
+
+      <!-- CONCLUSION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>
+          <strong>Explanation of the code:</strong>
+<ul>	
+	The Cantor Cube demonstrates the power of fractals in recursion, self-similarity, and 
+	dimensional reduction. As more iterations are applied, the shape becomes more intricate, 
+	showcasing fractal behavior in three dimensions. Its mathematical and 
+	real-world significance extends to fields like physics, engineering, and computer graphics.
+
+	
+</ul>
+        </p>
+      </section>
+
+     
+     
+     
+   
+     
+     
+     
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>
