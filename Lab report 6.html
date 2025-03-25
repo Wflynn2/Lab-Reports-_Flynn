@@ -77,89 +77,14 @@
 	<pre><code class="language-python">
 	# This is an Extension of the Code;
 
-# prompt: cantor cubes
+# Set the number of iterations
+iterations = 4
 
-import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+# Apply the iterative transformation
+fractal_grid = iterative_transform(grid, iterations)
 
-# Set initial parameters
-x_start = 0
-x_end = 3
-y_start = 0
-y_end = 3
-z_position = 0
-bar_height = 5
-spacing = 10
-depth = 4
-
-
-def cantor_cube(x_start, x_end, y_start, y_end, z_position, depth):
-    if depth == 0:
-        return []
-
-    # Calculate the size of the segments
-    x_mid = (x_start + x_end) / 2
-    y_mid = (y_start + y_end) / 2
-
-    # Define the segments
-    segments = []
-
-    # Define the 8 segments for each cube iteration
-    points = [
-        (x_start, y_start, z_position),
-        (x_mid, y_start, z_position),
-        (x_start, y_mid, z_position),
-        (x_mid, y_mid, z_position),
-        (x_start, y_start, z_position - bar_height),
-        (x_mid, y_start, z_position - bar_height),
-        (x_start, y_mid, z_position - bar_height),
-        (x_mid, y_mid, z_position - bar_height),
-
-        (x_mid, y_mid, z_position),
-        (x_end, y_mid, z_position),
-        (x_mid, y_end, z_position),
-        (x_end, y_end, z_position),
-        (x_mid, y_mid, z_position - bar_height),
-        (x_end, y_mid, z_position - bar_height),
-        (x_mid, y_end, z_position - bar_height),
-        (x_end, y_end, z_position - bar_height),
-
-    ]
-
-    for i in range(0, 16, 2):
-        segments.append((points[i], points[i+1]))
-
-
-    # Recursively call Cantor Cube
-    segments += cantor_cube(x_start, x_mid, y_start, y_mid, z_position - spacing, depth - 1)
-    segments += cantor_cube(x_mid, x_end, y_start, y_mid, z_position - spacing, depth - 1)
-    segments += cantor_cube(x_start, x_mid, y_mid, y_end, z_position - spacing, depth - 1)
-    segments += cantor_cube(x_mid, x_end, y_mid, y_end, z_position - spacing, depth - 1)
-
-    return segments
-
-# Create segments
-segments = cantor_cube(x_start, x_end, y_start, y_end, z_position, depth)
-
-
-#Plot
-fig = plt.figure(figsize=(10, 10))
-ax = fig.add_subplot(111, projection='3d')
-
-for segment in segments:
-    x = [segment[0][0], segment[1][0]]
-    y = [segment[0][1], segment[1][1]]
-    z = [segment[0][2], segment[1][2]]
-
-    ax.plot(x, y, z, color='black', linewidth=2)
-
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-ax.set_title('Cantor Cube')
-plt.show()
-
+# Plot the fractal grid
+plot_grid(fractal_grid)
 	</code></pre>
 
 
@@ -247,11 +172,13 @@ The code is modular, making it easy to modify or extend (e.g., changing the grid
         <p>
           <strong>Explanation of the code:</strong>
 <ul>	
-	The Cantor Cube demonstrates the power of fractals in recursion, self-similarity, and 
-	dimensional reduction. As more iterations are applied, the shape becomes more intricate, 
-	showcasing fractal behavior in three dimensions. Its mathematical and 
-	real-world significance extends to fields like physics, engineering, and computer graphics.
-
+	
+The code generates and visualizes a 2D grid of small dots or points 50 x 50 using Numpy and mathplotlib.
+	The grid using a function created 2D grid of coordinates with evenly 
+	spaced points.  The space was evenly spaced between (-1,1), then
+	changed to (-2,2) and the color was changed from blue to green. The
+	code was then extended by changing the iteration to 4, with created 
+	another grid.
 	
 </ul>
         </p>
