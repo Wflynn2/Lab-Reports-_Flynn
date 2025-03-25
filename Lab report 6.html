@@ -176,46 +176,25 @@ plt.show()
       
         <h2>Results &amp; Analysis</h2>
         <p>
-The Cantor fractal is a self-similar fractal created by repeatedly removing middle sections of a shape while preserving its structure at smaller scales. 
-		Common versions include the Cantor set (1D), Cantor dust (2D), and Cantor cube (3D).  The initial bar spans from x_start to x_end.
-At each recursion level:
-The middle third of each bar is removed.
-The remaining left and right segments are drawn.
-This process repeats for depth levels.
-The result is a fractal where each level reveals smaller black bars with increasing gaps, forming the Cantor set.
+The code generating grid sizes creates a 2D grid of coordinates using np.meshgrid().
 
-		<p></p>
-	      The Code is in different parts as follows:
-	      <p>
-		      numpy is used to store the segments of the Cantor set in a structured format.
-matplotlib.pyplot is used to plot the Cantor set.
-		      <p>
-			      The Cantor set starts with a black bar spanning from x_start to x_end.
-			      <p>
-depth controls how many iterations (levels) the recursion will run.
-				      <p>
-spacing determines the distance between each row of bars.
-					      <p>
-bar_height specifies how thick the bars appear.
-						      <p>
-The Cantor set is constructed by repeatedly removing the middle third of each segment.
-							      <p>
-For the current bar:
-								      <p>
-left_segment: The left third of the current bar.
-									      <p>
-right_segment: The right third of the current bar.
-										      <p>
-The middle third is removed, creating the "gap."
-											      <p>
-The function makes recursive calls:
-												      <p>
-Left side: Calls the function again for the left third of the current segment.
-Right side: Calls the function again for the right third of the current segment.
-													      <p>
+Outputs a tuple of two 2D arrays representing the x and y coordinates.
+
+plot_grid(grid)
+
+Visualizes the grid points with plt.scatter() using matplotlib.
+
+The grid is plotted as blue dots with a point size of 1.
+
+The figure size and title are set for better readability.
+
+Modularity:
+
+The code is modular, making it easy to modify or extend (e.g., changing the grid size or color scheme)
+	     
+					   
 													      
-													      
-Decreases depth by 1 and lowers the y_position by spacing for the next level.
+
 	      </p>
          
 
