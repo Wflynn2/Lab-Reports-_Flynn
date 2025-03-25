@@ -39,16 +39,23 @@
         
 
     Parameters:
+		<p></p>
     - size (int): The number of points along each axis, resulting in a size x size grid.
-
+<p></p>
     Returns:
+	      <p></p>
     - grid (tuple of ndarrays): A tuple containing two 2D arrays (x_grid, y_grid) representing 
       the coordinates of the grid points.
+	      <p></p>
     
     Explanation:
+	      <p></p>
     - np.linspace(-1, 1, size): Generates 'size' evenly spaced points between -1 and 1 along each axis.
+	      <p>
     - np.meshgrid(x, y): Creates two 2D arrays (x_grid and y_grid), where:
+		      <p>
         - x_grid contains the x-coordinates repeated along the rows.
+			      <p>
         - y_grid contains the y-coordinates repeated along the columns.
 
 		<p></p>
