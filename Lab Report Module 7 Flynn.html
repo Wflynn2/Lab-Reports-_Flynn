@@ -111,14 +111,67 @@ Loops through every point in the 2D space, evaluates its membership in the Mande
 	<pre><code class="language-python">
 	# This is an Extension of the Code;
 
-# Set the number of iterations
-iterations = 4
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+from numba import jit
 
-# Apply the iterative transformation
-fractal_grid = iterative_transform(grid, iterations)
+# JIT-optimized Mandelbrot function
+@jit(nopython=True)
+def mandelbrot(c, max_iter):
+    z = 0
+    n = 0
+    while abs(z) <= 2 and n < max_iter:
+        z = z*z + c
+        n += 1
+    return n
 
-# Plot the fractal grid
-plot_grid(fractal_grid)
+@jit(nopython=True)
+def mandelbrot_set(xmin, xmax, ymin, ymax, width, height, max_iter):
+    r1 = np.linspace(xmin, xmax, width)
+    r2 = np.linspace(ymin, ymax, height)
+    n3 = np.empty((width, height))
+    for i in range(width):
+        for j in range(height):
+            n3[i, j] = mandelbrot(r1[i] + 1j * r2[j], max_iter)
+    return n3
+
+# =======================
+# CONFIGURATION
+# =======================
+
+center_x, center_y = -0.743643887037151, 0.131825904205330  # Deep zoom region
+zoom_factor = 0.95  # How much to zoom in each frame
+num_frames = 30     # Number of frames in animation
+width, height = 800, 800
+max_iter = 500
+cmap_choice = 'twilight_shifted'  # Try others: 'hot', 'inferno', 'plasma', etc.
+
+# =======================
+# ANIMATION SETUP
+# =======================
+
+fig, ax = plt.subplots(figsize=(8, 8))
+
+def animate(i):
+    ax.clear()
+    zoom = zoom_factor ** i
+    range_x = 0.01 * zoom
+    range_y = 0.01 * zoom
+    xmin = center_x - range_x
+    xmax = center_x + range_x
+    ymin = center_y - range_y
+    ymax = center_y + range_y
+
+    mandelbrot_img = mandelbrot_set(xmin, xmax, ymin, ymax, width, height, max_iter)
+    ax.imshow(mandelbrot_img.T, extent=[xmin, xmax, ymin, ymax], cmap=cmap_choice)
+    ax.set_title(f"Mandelbrot Zoom Frame {i+1}")
+    ax.axis('off')
+
+ani = FuncAnimation(fig, animate, frames=num_frames, interval=150)
+ani.save('mandelbrot_zoom.gif', writer='pillow')  # Save as GIF
+
+plt.show()
 	</code></pre>
 
 
