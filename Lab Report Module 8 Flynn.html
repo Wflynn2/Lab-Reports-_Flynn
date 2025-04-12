@@ -1,40 +1,266 @@
+<!-- INTRODUCTION SECTION -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<html>
+<head> <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="stylesheet" href="https://latex.vercel.app/style.css" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"/><script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]}};</script>
+
+<title>Fractal Geometry Lab Report - Module 7</title>
+
+</head>
+	
+<body id="top">
+
+
+	
+
+  <header>
+    <h1>Fractal Geometry Lab Report</h1>
+    <p class="author">
+      [Winsome Flynn] <br />
+      [April 12, 2025]
+    </p>
+  </header>
+  
+
+
+  <main>
+    <article class="indent-pars">
+      
+      <!-- INTRODUCTION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+        Overview
+This Python script generates and visualizes the Mandelbrot Set — a famous fractal defined in the complex plane. The Mandelbrot Set is composed of complex numbers 
+          for which the function f(z) = z² + c does not diverge when iterated from z = 0. The visualization is created using NumPy for numerical operations, 
+          Matplotlib for plotting, and Numba's JIT compiler to optimize performance.
+
+          <p></p>
+
+Function Documentation
+@jit(nopython=True)
+Numba's @jit decorator is used to speed up numerical computations by compiling the Python functions to machine code at runtime. nopython=True enforces that the
+        function does not fall back to slower Python mode, which boosts performance significantly.
+
+        <p></p>
+
+mandelbrot(c: complex, max_iter: int) -> int
+Purpose:
+Determines the number of iterations it takes for the complex sequence zₙ₊₁ = zₙ² + c (starting from z = 0) to exceed an absolute value of 2. 
+        This helps to determine whether a complex number c is in the Mandelbrot Set.
+
+        <p></p>
+
+Parameters:
+
+c: A complex number to test.
+
+max_iter: Maximum number of iterations before deciding the point is in the set.
+
+        <p></p>
+
+Returns:
+
+The number of iterations before the sequence escapes, or max_iter if it doesn't.
+
+mandelbrot_set(xmin, xmax, ymin, ymax, width, height, max_iter) -> np.ndarray
+        <p></p>
+Purpose:
+Generates a 2D array representing the Mandelbrot Set over a specified portion of the complex plane.
+        <p></p>
+
+Parameters:
+
+xmin, xmax: Range of the real axis.
+
+ymin, ymax: Range of the imaginary axis.
+
+width, height: Resolution of the output image.
+
+max_iter: Maximum number of iterations per point.
+        <p></p>
+
+Returns:
+
+A 2D NumPy array where each element represents the number of iterations for the corresponding complex point.
+
+        <p></p>
+
+How It Works:
+
+Constructs linearly spaced arrays for the real (r1) and imaginary (r2) parts of complex numbers.
+
+Loops through every point in the 2D space, evaluates its membership in the Mandelbrot Set using the mandelbrot() function, and stores the result in an output array.
+        <p></p>
+
+
+      </section>
+
+
+     
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<section id="code">
+	<pre><code class="language-python">
+	# This is an Extension of the Code;
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 from numba import jit
 
-# JIT-optimized function to generate the Julia Set
+# JIT-optimized Mandelbrot function
 @jit(nopython=True)
-def julia_set(c, xmin, xmax, ymin, ymax, width, height, max_iter):
+def mandelbrot(c, max_iter):
+    z = 0
+    n = 0
+    while abs(z) <= 2 and n < max_iter:
+        z = z*z + c
+        n += 1
+    return n
+
+@jit(nopython=True)
+def mandelbrot_set(xmin, xmax, ymin, ymax, width, height, max_iter):
     r1 = np.linspace(xmin, xmax, width)
     r2 = np.linspace(ymin, ymax, height)
     n3 = np.empty((width, height))
-
     for i in range(width):
         for j in range(height):
-            z = r1[i] + 1j * r2[j]
-            n = 0
-            while abs(z) <= 2 and n < max_iter:
-                z = z*z + c
-                n += 1
-            n3[i, j] = n
-
+            n3[i, j] = mandelbrot(r1[i] + 1j * r2[j], max_iter)
     return n3
 
-# Parameters for the plot
-xmin, xmax, ymin, ymax = -1.5, 1.5, -1.5, 1.5
-width, height = 800, 800  # Image resolution
-max_iter = 256  # Number of iterations for accuracy
+# =======================
+# CONFIGURATION
+# =======================
 
-# Choose a value for the complex constant c
-c = complex(-0.8, 0.156)
+center_x, center_y = -0.743643887037151, 0.131825904205330  # Deep zoom region
+zoom_factor = 0.95  # How much to zoom in each frame
+num_frames = 30     # Number of frames in animation
+width, height = 800, 800
+max_iter = 500
+cmap_choice = 'twilight_shifted'  # Try others: 'hot', 'inferno', 'plasma', etc.
 
-# Generate the Julia Set
-n3 = julia_set(c, xmin, xmax, ymin, ymax, width, height, max_iter)
+# =======================
+# ANIMATION SETUP
+# =======================
 
-# Plotting the Julia Set
-plt.figure(figsize=(10, 10))
-plt.imshow(n3.T, extent=[xmin, xmax, ymin, ymax], cmap='hot', interpolation='bilinear')
-plt.colorbar()
-plt.title(f"Julia Set for c = {c}")
+fig, ax = plt.subplots(figsize=(8, 8))
+
+def animate(i):
+    ax.clear()
+    zoom = zoom_factor ** i
+    range_x = 0.01 * zoom
+    range_y = 0.01 * zoom
+    xmin = center_x - range_x
+    xmax = center_x + range_x
+    ymin = center_y - range_y
+    ymax = center_y + range_y
+
+    mandelbrot_img = mandelbrot_set(xmin, xmax, ymin, ymax, width, height, max_iter)
+    ax.imshow(mandelbrot_img.T, extent=[xmin, xmax, ymin, ymax], cmap=cmap_choice)
+    ax.set_title(f"Mandelbrot Zoom Frame {i+1}")
+    ax.axis('off')
+
+ani = FuncAnimation(fig, animate, frames=num_frames, interval=150)
+ani.save('mandelbrot_zoom.gif', writer='pillow')  # Save as GIF
+
 plt.show()
+	</code></pre>
+
+
+
+
+
+
+      </section>
+
+      <!-- RESULTS & ANALYSIS SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="results">
+      
+      
+        <h2>Results &amp; Analysis</h2>
+        <p>
+Explanation:
+
+The Mandelbrot Set is computed for a zoomed-in section, showing intricate detail.
+
+imshow displays the 2D data with a heatmap (hot colormap), where color intensity reflects iteration count.
+
+n3.T is the transpose of the data to match image axes with the coordinate system.
+					   
+													      
+
+	      </p>
+         
+
+
+
+
+
+
+
+        </p>
+
+
+
+
+    <figure>
+   <img src="https://raw.githubusercontent.com/Wflynn2/Lab-Reports-_Flynn/main/Mandelbrot.png" 
+     alt="Mandelbrot" 
+     width="600" 
+     height="400">
+    <figcaption>Mandelbrot</figcaption>
+
+
+		 <figcaption>
+          <strong>Figure 1:</strong> 
+		Mandelbrot
+
+
+
+
+
+      </section>
+
+
+
+      <!-- CONCLUSION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>
+This script efficiently generates detailed visualizations of the Mandelbrot Set, even for high-resolution zooms, thanks to JIT compilation via Numba. 
+          It serves as both a mathematical tool and an artistic exploration of fractal geometry.
+	
+</ul>
+        </p>
+      </section>
+
+     
+     
+     
+   
+     
+     
+     
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>
+
