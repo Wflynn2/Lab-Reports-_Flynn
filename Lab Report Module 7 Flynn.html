@@ -1,0 +1,216 @@
+<!-- INTRODUCTION SECTION -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<html>
+<head> <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="stylesheet" href="https://latex.vercel.app/style.css" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"/><script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]}};</script>
+
+<title>Fractal Geometry Lab Report - Module 6</title>
+
+</head>
+	
+<body id="top">
+
+
+
+  <header>
+    <h1>Fractal Geometry Lab Report</h1>
+    <p class="author">
+      [Winsome Flynn] <br />
+      [March 25, 2025]
+    </p>
+  </header>
+  
+
+
+  <main>
+    <article class="indent-pars">
+      
+      <!-- INTRODUCTION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+        Overview
+This Python script generates and visualizes the Mandelbrot Set — a famous fractal defined in the complex plane. The Mandelbrot Set is composed of complex numbers 
+          for which the function f(z) = z² + c does not diverge when iterated from z = 0. The visualization is created using NumPy for numerical operations, 
+          Matplotlib for plotting, and Numba's JIT compiler to optimize performance.
+
+          <p></p>
+
+Function Documentation
+@jit(nopython=True)
+Numba's @jit decorator is used to speed up numerical computations by compiling the Python functions to machine code at runtime. nopython=True enforces that the
+        function does not fall back to slower Python mode, which boosts performance significantly.
+
+        <p></p>
+
+mandelbrot(c: complex, max_iter: int) -> int
+Purpose:
+Determines the number of iterations it takes for the complex sequence zₙ₊₁ = zₙ² + c (starting from z = 0) to exceed an absolute value of 2. 
+        This helps to determine whether a complex number c is in the Mandelbrot Set.
+
+        <p></p>
+
+Parameters:
+
+c: A complex number to test.
+
+max_iter: Maximum number of iterations before deciding the point is in the set.
+
+        <p></p>
+
+Returns:
+
+The number of iterations before the sequence escapes, or max_iter if it doesn't.
+
+mandelbrot_set(xmin, xmax, ymin, ymax, width, height, max_iter) -> np.ndarray
+        <p></p>
+Purpose:
+Generates a 2D array representing the Mandelbrot Set over a specified portion of the complex plane.
+        <p></p>
+
+Parameters:
+
+xmin, xmax: Range of the real axis.
+
+ymin, ymax: Range of the imaginary axis.
+
+width, height: Resolution of the output image.
+
+max_iter: Maximum number of iterations per point.
+        <p></p>
+
+Returns:
+
+A 2D NumPy array where each element represents the number of iterations for the corresponding complex point.
+
+        <p></p>
+
+How It Works:
+
+Constructs linearly spaced arrays for the real (r1) and imaginary (r2) parts of complex numbers.
+
+Loops through every point in the 2D space, evaluates its membership in the Mandelbrot Set using the mandelbrot() function, and stores the result in an output array.
+        <p></p>
+
+
+      </section>
+
+
+     
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<section id="code">
+	<pre><code class="language-python">
+	# This is an Extension of the Code;
+
+# Set the number of iterations
+iterations = 4
+
+# Apply the iterative transformation
+fractal_grid = iterative_transform(grid, iterations)
+
+# Plot the fractal grid
+plot_grid(fractal_grid)
+	</code></pre>
+
+
+
+
+
+
+      </section>
+
+      <!-- RESULTS & ANALYSIS SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="results">
+      
+      
+        <h2>Results &amp; Analysis</h2>
+        <p>
+Explanation:
+
+The Mandelbrot Set is computed for a zoomed-in section, showing intricate detail.
+
+imshow displays the 2D data with a heatmap (hot colormap), where color intensity reflects iteration count.
+
+n3.T is the transpose of the data to match image axes with the coordinate system.
+					   
+													      
+
+	      </p>
+         
+
+
+
+
+
+
+
+        </p>
+
+
+
+
+    <figure>
+    <img src="https://raw.githubusercontent.com/Wflynn2/Lab-Reports-_Flynn/main/2D%20grid%20dimensions%20changed.png" 
+         alt="2D Grid with modifications" 
+         width="600" 
+         height="400">
+    <figcaption>2D Grid with Modified Dimensions</figcaption>
+
+
+		 <figcaption>
+          <strong>Figure 1:</strong> 
+		The 2D Grid
+
+ <figure>
+    <img src="https://raw.githubusercontent.com/Wflynn2/Lab-Reports-_Flynn/main/2D%20grid%20extension%20of%20code%20green.png" 
+         alt="2D Grid with extensions" 
+         width="600" 
+         height="400">
+    <figcaption>2D Grid with extensions</figcaption>
+
+
+
+      </section>
+
+
+
+      <!-- CONCLUSION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>
+This script efficiently generates detailed visualizations of the Mandelbrot Set, even for high-resolution zooms, thanks to JIT compilation via Numba. 
+          It serves as both a mathematical tool and an artistic exploration of fractal geometry.
+	
+</ul>
+        </p>
+      </section>
+
+     
+     
+     
+   
+     
+     
+     
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>
