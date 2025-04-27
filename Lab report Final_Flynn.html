@@ -189,6 +189,202 @@ probabilistic transformations to simulate natual randomness.
 </body>
 </html>
 
+<!-- INTRODUCTION SECTION -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------------------------------------- -->
+<html>
+<head> <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="stylesheet" href="https://latex.vercel.app/style.css" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"/><script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]}};</script>
+
+<title>Fractal Geometry Lab Report - Module 4</title>
+
+</head>
+	
+<body id="top">
+
+
+
+  <header>
+    <h1>Fractal Geometry Lab Report</h1>
+    <p class="author">
+      [Winsome Flynn] <br />
+      [March 9, 2025]
+    </p>
+  </header>
+  
+
+
+  <main>
+    <article class="indent-pars">
+      
+      <!-- INTRODUCTION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+         This assignment documents the code for generating trees with Turtle. 
+		The branching structure, created using axial trees, draws a trunk with 
+		branches. Fractals are used throughout the illustrations to create more 
+		intricate branches. Using ChatGPT, the code was extended to generate a 3D 
+		image and an axial tree incorporating phyllotactic patterns with three 
+		branches.
+        </p>
+      </section>
+
+
+     
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------------- -->
+	<section id="code">
+	<pre><code class="language-python">
+	# This is an Extension of the Code;
+
+# prompt: expand using 3D
+
+from turtle_setup import *
+!wget -O turtle_setup.py 'https://raw.githubusercontent.com/williamedwardhahn/fractal25/refs/heads/main/turtle_setup.py'
+
+# Function to draw a 3D-like fractal tree using recursion
+def fractal_tree_3d(length, depth, angle):
+    if depth == 0:
+        return
+    else:
+        forward(length)
+        left(angle)
+        fractal_tree_3d(length * 0.7, depth - 1, angle)  # Left branch
+        right(2 * angle)
+        fractal_tree_3d(length * 0.7, depth - 1, angle) # Right branch
+
+        left(angle)
+        backward(length)
+
+        # Simulate depth by slightly shifting the branches
+        if depth > 2: # Avoid shifting too early
+          penup()
+          right(angle/2)
+          forward(depth * 2)
+          pendown()
+          left(angle/2)
+          fractal_tree_3d(length * 0.5, depth - 2, angle) # depth branch
+          penup()
+          backward(depth * 2)
+          left(angle/2)
+          pendown()
+          right(angle/2)
+
+
+# Initialize the turtle
+initializeTurtle(initial_window_size=(800, 800))
+
+# Set up the turtle's starting position and orientation
+jump(400, 600)  # Starting position at the bottom center of the canvas
+face(0)
+color('green')  # Set the pen color
+speed(0) # Set speed to fastest
+
+# Set the length and depth for the fractal tree
+length = 80  # Initial length of the main trunk
+depth = 7     # Recursion depth (number of branching levels)
+angle = 25 # branching angle
+# Draw the 3D-like fractal tree
+fractal_tree_3d(length, depth, angle)
+
+# Display the drawing
+show()
+
+	</code></pre>
+
+
+
+
+
+
+      </section>
+
+      <!-- RESULTS & ANALYSIS SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="results">
+      
+      
+        <h2>Results &amp; Analysis</h2>
+        <p>
+The branching structure is created using a fractal pattern.
+Recursive branching, where each branch splits into smaller branches, creating a natural tree-like appearance.
+To extend the code a 3D perspective, giving depth and realism to the fractal tree was created.
+Mathematical precision is incorporated using L-systems, axial trees, and phyllotactic patterns.
+         
+
+
+
+
+
+
+
+        </p>
+
+
+
+
+         <figure>
+ <img src="https://raw.githubusercontent.com/Wflynn2/Lab-Reports-_Flynn/main/3D%20Tree%20Fractal.png" 
+     alt="3D Tree Fractal" 
+     width="600" 
+     height="400">
+
+		 <figcaption>
+          <strong>Figure 1:</strong> 
+		The image titled "3D Tree Fractal" depicts a tree-like fractal structure generated using code.
+			 The second image title "Phyllotactic Pattern Tree" depicts a tree-like fractal structure
+			 generated using code.
+
+
+
+<img src="https://raw.githubusercontent.com/Wflynn2/Lab-Reports-_Flynn/main/Pyllotactic%20patterns%20tree.png" 
+     alt="Phyllotactic Patterns Tree" 
+     width="600" 
+     height="400">
+
+      </section>
+
+
+
+      <!-- CONCLUSION SECTION -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>
+          <strong>Explanation of the code:</strong>
+<ul>
+  The tree fractal code creates branches and then each recursive formula
+	calls additional branches which spawns into smaller branches.
+	Angles controls the direction of the new branches, while backtracking moves the
+	turtle back to the previous branch position.  To create the 3D coordinate transformations, the
+	branching layers are multiplied to simulate depth.
+	
+</ul>
+        </p>
+      </section>
+
+     
+     
+     
+   
+     
+     
+     
+  </main>
 
 
 
