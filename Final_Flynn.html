@@ -56,55 +56,40 @@
 	# This is an Extension of the Code;
 
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from random import random, randint
 import numpy as np
 
-# Function to calculate the midpoints of a triangle
-def midpoint(p1, p2, p3):
-    return (p1 + p2 + p3) / 3
+def interpolate(P, Q, ratio=0.5):
+    """Move from P toward Q by a given ratio."""
+    return (ratio*P[0] + (1-ratio)*Q[0], ratio*P[1] + (1-ratio)*Q[1])
 
-# Recursive function to generate the Sierpinski triangle in 3D
-def sierpinski_3d(vertices, depth):
-    if depth == 0:
-        # Create a single triangle at depth 0
-        triangles = [vertices]
-        return triangles
-    else:
-        # Calculate midpoints of the current triangle
-        p1, p2, p3 = vertices
-        m1 = midpoint(p1, p2, p3)
-        m2 = midpoint(p1, p2, p3)
-        m3 = midpoint(p1, p2, p3)
-        
-        # Generate smaller triangles at the next depth level
-        smaller_triangles = []
-        smaller_triangles += sierpinski_3d([p1, m1, m2], depth - 1)
-        smaller_triangles += sierpinski_3d([p2, m2, m3], depth - 1)
-        smaller_triangles += sierpinski_3d([p3, m3, m1], depth - 1)
-        
-        return smaller_triangles
+# Set up vertices: try regular polygons (e.g., triangle, square, pentagon, etc.)
+def generate_regular_polygon(sides=3, radius=2, center=(2, np.sqrt(3))):
+    angles = np.linspace(0, 2*np.pi, sides, endpoint=False)
+    return [(center[0] + radius*np.cos(a), center[1] + radius*np.sin(a)) for a in angles]
 
-# Initial triangle vertices in 3D
-p1 = np.array([1, 0, 0])
-p2 = np.array([-1, 0, 0])
-p3 = np.array([0, 1, 0])
-depth = 3
+vertices = generate_regular_polygon(sides=5)  # Try with 5 sides (pentagon)
 
-# Create the Sierpinski triangle fractal
-triangles = sierpinski_3d([p1, p2, p3], depth)
+iterates = 50000
+x, y, colors = [0]*iterates, [0]*iterates, [0]*iterates
 
-# Plotting the result
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+# Random starting point
+x[0], y[0] = random()*4, random()*4
 
-# Plot each triangle
-for tri in triangles:
-    ax.add_collection3d(Poly3DCollection([tri], color='cyan', linewidths=1, edgecolors='r', alpha=0.3))
+# Ratio (not just 0.5)
+ratio = 0.5
 
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
+for i in range(1, iterates):
+    k = randint(0, len(vertices) - 1)
+    x[i], y[i] = interpolate(vertices[k], (x[i-1], y[i-1]), ratio=ratio)
+    colors[i] = k  # Save vertex chosen for color coding
 
+# Plotting
+plt.figure(figsize=(8, 8))
+plt.scatter(x, y, c=colors, cmap='hsv', s=0.1)  # Colorful points based on vertex
+plt.title('Generalized Chaos Game with Polygon (5 sides)')
+plt.axis('equal')
+plt.axis('off')  # Hide axis for aesthetics
 plt.show()
 
 
