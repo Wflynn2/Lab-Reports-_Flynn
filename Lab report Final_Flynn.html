@@ -219,64 +219,55 @@ probabilistic transformations to simulate natual randomness.
 	<pre><code class="language-python">
 	# This is an Extension of the Code;
 
-# prompt: Made changes to code:
+# prompt: expand using 3D
 
-# Import necessary modules
-import math
+from turtle_setup import *
+!wget -O turtle_setup.py 'https://raw.githubusercontent.com/williamedwardhahn/fractal25/refs/heads/main/turtle_setup.py'
+
+# Function to draw a 3D-like fractal tree using recursion
+def fractal_tree_3d(length, depth, angle):
+    if depth == 0:
+        return
+    else:
+        forward(length)
+        left(angle)
+        fractal_tree_3d(length * 0.7, depth - 1, angle)  # Left branch
+        right(2 * angle)
+        fractal_tree_3d(length * 0.7, depth - 1, angle) # Right branch
+
+        left(angle)
+        backward(length)
+
+        # Simulate depth by slightly shifting the branches
+        if depth > 2: # Avoid shifting too early
+          penup()
+          right(angle/2)
+          forward(depth * 2)
+          pendown()
+          left(angle/2)
+          fractal_tree_3d(length * 0.5, depth - 2, angle) # depth branch
+          penup()
+          backward(depth * 2)
+          left(angle/2)
+          pendown()
+          right(angle/2)
+
 
 # Initialize the turtle
-initializeTurtle()
-showturtle()
+initializeTurtle(initial_window_size=(800, 800))
 
-# Function to apply L-system rules
-def apply_rules(char, rules):
-    return rules.get(char, char)
-
-# Function to generate L-system string
-def generate_lsystem(axiom, rules, iterations):
-    current_string = axiom
-    for _ in range(iterations):
-        next_string = ''.join([apply_rules(char, rules) for char in current_string])
-        current_string = next_string
-    return current_string
-
-# Function to draw the L-system with turtle
-def draw_lsystem(turtle_string, length, angle):
-    for command in turtle_string:
-        if command == 'F':
-            forward(length)
-        elif command == '+':
-            left(angle)
-        elif command == '-':
-            right(angle)
-        # 'L' and 'R' are placeholders; we ignore them in drawing
-        else:
-            pass  # Ignore other characters
-
-# Set the parameters for the Hilbert Curve
-axiom = 'L'
-rules = {
-    'L': '-RF+LFL+FR-',
-    'R': '+LF-RFR-FL+'
-}
-iterations = 3  # Adjust the iterations to change the order (e.g., 1 to 5)
-angle = 90
-
-# Generate the L-system string for the Hilbert curve
-hilbert_string = generate_lsystem(axiom, rules, iterations)
-
-# Calculate the step size based on desired size and iterations
-size = 300  # Total size of the Hilbert curve (adjust as needed)
-n = 2 ** iterations - 3
-length = size / n
-
-# Move to starting position
-jump(400, 500)  # Adjust the starting position to fit your canvas
+# Set up the turtle's starting position and orientation
+jump(400, 600)  # Starting position at the bottom center of the canvas
 face(0)
-color('pink')
+color('green')  # Set the pen color
+speed(0) # Set speed to fastest
 
-# Draw the Hilbert curve
-draw_lsystem(hilbert_string, length, angle)
+# Set the length and depth for the fractal tree
+length = 80  # Initial length of the main trunk
+depth = 7     # Recursion depth (number of branching levels)
+angle = 25 # branching angle
+# Draw the 3D-like fractal tree
+fractal_tree_3d(length, depth, angle)
 
 # Display the drawing
 show()
